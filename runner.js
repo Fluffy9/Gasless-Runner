@@ -85,14 +85,16 @@ class Runner {
         let gas = await this.owner.estimateGas(tx)
         if(!gas){ throw new Error()}
         tx = await this.owner.sendTransaction(tx)
-        return await tx.wait()
+        return tx
+        //return await tx.wait()
     }
     async removeUser(address){
         let tx = await this.limiter.populateTransaction.removeUser(address)
         let gas = await this.owner.estimateGas(tx)
         if(!gas){ throw new Error()}
         tx = await this.owner.sendTransaction(tx)
-        return await tx.wait()
+        return tx
+        //return await tx.wait()
     }
 }
 module.exports.Runner = Runner
