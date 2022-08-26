@@ -59,7 +59,10 @@ class Runner {
         let balances = await this.ethcallProvider.all(promises)
         balances.map((balance, i) => this.wallets[i].balance = balance)
         let selection = this.wallets.filter(wallet => wallet.balance.gt(cost))
-        selection = selection.sort((a, b) => (a.priority > b.priority) ? 1 : -1).reverse()
+        selection = selection.sort((a, b) => (a.priority > b.priority) ? 1 : -1)
+        let index = this.wallets.findIndex(x => x.wallet.address == selection[0].wallet.address)
+        this.wallets[index].priority += 1
+        console.log(`Priority: ${selection[0].priority}, Address: ${selection[0].wallet.address}`)
         return selection[0]
     }
     /**
@@ -74,11 +77,11 @@ class Runner {
         let universalProfile = new ethers.Contract(address, UniversalProfileContract.abi, this.provider)
         let keyManager = await universalProfile.owner()
         keyManager = new ethers.Contract(keyManager, KeyManagerContract.abi, this.provider)
-        let tx = await this.limiter.populateTransaction.execute(universalProfile.address, signature, nonce, abi, {from: this.wallets[0].wallet.address})//await keyManager.populateTransaction.executeRelayCall(signature, nonce, abi)
+        let tx = await this.limiter.populateTransaction.execute(universalProfile.address, signature, nonce, abi)//await keyManager.populateTransaction.executeRelayCall(signature, nonce, abi)
         let gas = await this.wallets[0].wallet.estimateGas(tx)
         let wallet = (await this.selectWallet(gas)).wallet
-        let recipt = await wallet.sendTransaction(tx)
-        return recipt.hash
+        let receipt = await wallet.sendTransaction(tx)
+        return receipt.hash
     }
     async addUser(address){
         let tx = await this.limiter.populateTransaction.addUser(address)
