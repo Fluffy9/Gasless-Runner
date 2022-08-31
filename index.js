@@ -137,7 +137,7 @@
  app.post(plan.baseURL + 'execute', async(req, res) => {
    
    try{
-     let hash = await runner.sendTransaction(req.body['address'], req.body.transaction['abi'], req.body.transaction['signature'], req.body.transaction['nonce'])
+     let hash = await runner.sendTransaction(req.body['address'], req.body.transaction['abi'], req.body.transaction['signature'], BigNumber.from(req.body.transaction['nonce']))
      console.log(hash)
      res.send(JSON.stringify({
        transactionHash: hash
