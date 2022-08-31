@@ -11,7 +11,7 @@ To scale, you could do a number of things depending on what the bottleneck is. I
 ## [Demo (Basic)](http://pupcakes.me:8084)
 
 ## Development setup
-Modify the variables in the .env file as necessary
+Modify the variables in the .env file as necessary and rename it to .env.local
 
 ```
 npm install
